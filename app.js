@@ -39,6 +39,24 @@ Exercise 4
 
 
 Solve Exercise 4 here:
+With chat gpt help
 */
+const starterPokemon = pokemon.find(p => p.starter);
+
+if (starterPokemon) {
+    game.party.push(starterPokemon);
+}
+/*
+Exercise 5
+1. Choose three more Pokémon from the `pokemon` array and add them to your party.
+2. Consider different attributes like 'type' or 'HP' for your selection. Which array method will you use to add them?
+
+
+Solve Exercise 5 here:
+*/
+items: [
+    { name: "Venusau", type: "grass", hp: 80},
+    { name: "Charizard", type: "fire", hp: 78},
+    { name:  "Metapod", type: "bug", hp: 50},
 
 
