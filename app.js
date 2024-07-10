@@ -1,4 +1,5 @@
-const pokemon = require('./data.js')
+const pokemon = require("./data");
+
 const game = {
     party: [],
     gyms: [
@@ -17,8 +18,8 @@ const game = {
       { name: "rare candy", quantity: 99 },
     ],
   }
-console.dir(pokemon, { maxArrayLength: null })
-console.log(game)
+// console.dir(pokemon, { maxArrayLength: null })
+//console.log(game)
 /*
 Exercise 3
 1. Add a new property to the `game` object. Let's call it "difficulty".
@@ -30,8 +31,8 @@ Solve Exercise 3 here:
 
 game.difficulty = "Easy";
 
-console.log(game.difficulty);
-console.log(game);
+console.log('this is exercise 3',game.difficulty);
+
 /*
 Exercise 4
 1. Select a starter Pokémon from the `pokemon` array. Remember, a starter Pokémon's `starter` property is true.
@@ -41,23 +42,29 @@ Exercise 4
 Solve Exercise 4 here:
 With chat gpt help
 */
-const starterPokemon = pokemon.find(p => p.starter);
+const starterPokemon = pokemon.find(p => p.starter===true);
 
 if (starterPokemon) {
     game.party.push(starterPokemon);
 }
+console.log('This is exercise 4',game.party)
 /*
 Exercise 5
 1. Choose three more Pokémon from the `pokemon` array and add them to your party.
 2. Consider different attributes like 'type' or 'HP' for your selection. Which array method will you use to add them?
 
 
+
 Solve Exercise 5 here:
 */
-items: [
-    { name: "Venusau", type: "grass", hp: 80},
-    { name: "Charizard", type: "fire", hp: 78},
-    { name:  "Metapod", type: "bug", hp: 50},
+let count = 0
+pokemon.forEach((p)=> {
+  if(p.hp === 40  && count < 3 ){
+    game.party.push(p)
+    count++
+  }
+}) 
+console.log("This is exercise 5", game.party)
 /*
 Exercise 6
 1. Set the `completed` property to true for gyms with a difficulty below 3.
@@ -67,11 +74,12 @@ Exercise 6
 Solve Exercise 6 here:
 */
 
-gyms.forEach(gym => {
+game.gyms.forEach((gym) => {
     if (gym.difficulty < 3) {
       gym.completed = true;
     }
   });
+  console.log("This excersice 6",game.gyms)
 /*
 Exercise 7
 1. Evolve the starter Pokémon you added to your party earlier. Each starter Pokémon evolves into a specific one.
@@ -88,14 +96,9 @@ More Hints: The existing starter Pokemon will be *replaced* in your party with t
 
 Solve Exercise 7 here:
 */
-function evolveStarter(party) {
-    const evolutions = {
-      "Bulbasaur": "Ivysaur",
-      "Charmander": "Charmeleon",
-      "Squirtle": "Wartortle",
-      "Pikachu": "Raichu"
-    };
-
+const evolvedPokemon = pokemon.find((p)=>p.number===2)
+game.party.splice(0,1,evolvedPokemon)
+console.log('this is excercise 7',game.party)
 /*
 Exercise 8
 1. Print the name of each Pokémon in your party.
@@ -114,9 +117,9 @@ Exercise 9
 
 Solve Exercise 9 here:
 */
-const starterPokemon = pokemon.filter(p => p.starter);
+const starterPokemon1 = pokemon.filter(p => p.starter);
 
-starterPokemon.forEach(p => {
+starterPokemon1.forEach(p => {
   console.log(p.name);
 });
 /*
@@ -130,8 +133,14 @@ After writing this method, call it and pass in a Pokemon object of your choice f
 
 Solve Exercise 10 here:
 */
-const chosenPokemon = pokemon.find(p => p.name === "Bulbasaur");
-game.catchPokemon(chosenPokemon);
+game.catchPokemon = function (pokemonObj){
+  this.party.push(pokemonObj)
+}
+const pokemenToCatch = pokemon.find((p) => p.name === "Pikachu")
+game.catchPokemon(pokemenToCatch)
+
+console.log("After catching Pokémon with method:");
+console.log(game.party);
 /*
 Exercise 11
 1. Copy the `catchPokemon` method that you just wrote above, and paste it below. Modify it so that it also decreases the number of pokeballs in your inventory each time you catch a Pokémon.
@@ -144,30 +153,37 @@ Also, log the `game.items` array to confirm that the pokeball quantity is being 
 
 Solve Exercise 11 here:
 */
-const chosenPokemon = pokemon.find(p => p.name === "Pikachu");
-game.catchPokemon(chosenPokemon);
+game.catchPokemon = function(pokemonObj) {
+  this.party.push(pokemonObj);
 
-console.log(game.party);
-console.log(game.items);
+  // Decrease pokeballs
+  const pokeball = this.items.find(item => item.name === 'pokeball');
+  if (pokeball) {
+    pokeball.quantity--;
+  }
+}
+const pokemonToCatch = pokemon.find((p) => p.name === "Charmander");
+game.catchPokemon(pokemonToCatch);
 
+console.log('exercise number 11', game.items)
 /*
 Exercise 12
 1. Similar to Exercise 6, now complete gyms with a difficulty below 6. How will you approach this?
  (change the value of `complete` in the qualifying objects from false to true).
 
 Solve Exercise 12 here:
-*/
-completeGymsBelowSix() {
-    this.gyms.forEach(gym => {
-      if (gym.difficulty < 6) {
-        gym.completed = true;
-      }
-    });
-  }
-};
-game.completeGymsBelowSix();
+// */
+// completeGymsBelowSix: function() {
+//   this.gyms.forEach(gym => {
+//     if (gym.difficulty < 6) {
+//       gym.completed = true;
+//     }
+//   });
+// }
 
-console.log(game.gyms);
+// game.completeGymsBelowSix();
+
+// console.log(game.gyms);
 /*
 Exercise 13
 1. Create a `gymStatus` method in `game` to tally completed and incomplete gyms.
@@ -190,24 +206,24 @@ For example, if five gym objects have a value of `true` on their `completed` pro
 
 Solve Exercise 13 here:
 */
-gymStatus() {
-    const gymTally = {
-      completed: 0,
-      incomplete: 0
-    };
+// gymStatus() {
+//     const gymTally = {
+//       completed: 0,
+//       incomplete: 0
+//     };
 
-    this.gyms.forEach(gym => {
-      if (gym.completed) {
-        gymTally.completed++;
-      } else {
-        gymTally.incomplete++;
-      }
-    });
+//     this.gyms.forEach(gym => {
+//       if (gym.completed) {
+//         gymTally.completed++;
+//       } else {
+//         gymTally.incomplete++;
+//       }
+//     });
 
-    console.log(gymTally);
-  }
-};
-game.gymStatus();
+//     console.log(gymTally);
+//   }
+// };
+// game.gymStatus();
 /*
 Exercise 14
 1. Add a `partyCount` method to `game` that counts the number of Pokémon in your party.
@@ -220,14 +236,14 @@ This method should:
 Solve Exercise 14 here:
 */
 
-partyCount() {
-    return this.party.length;
-  }
-};
+// partyCount() {
+//     return this.party.length;
+//   }
+// };
 
-const pokemonCount = game.partyCount();
+// const pokemonCount = game.partyCount();
 
-console.log("Number of Pokémon in the party:", pokemonCount);
+// console.log("Number of Pokémon in the party:", pokemonCount);
 
 /*
 Exercise 15
@@ -237,17 +253,17 @@ Exercise 15
 Solve Exercise 15 here:
 */
 
-completeGymsBelowEight() {
-    this.gyms.forEach(gym => {
-      if (gym.difficulty < 8) {
-        gym.completed = true;
-      }
-    });
-  }
+// completeGymsBelowEight() {
+//     this.gyms.forEach(gym => {
+//       if (gym.difficulty < 8) {
+//         gym.completed = true;
+//       }
+//     });
+//   }
 
-game.completeGymsBelowEight();
+// game.completeGymsBelowEight();
 
-console.log(game.gyms);
+// console.log(game.gyms);
 
 /*
 Exercise 16
@@ -257,4 +273,4 @@ Exercise 16
 Solve Exercise 16 here:
 */
 
-console.log(game);
+// console.log(game);
